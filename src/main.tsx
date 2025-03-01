@@ -1,27 +1,41 @@
 // Learn more at developers.reddit.com/docs
-import { Devvit, useState } from '@devvit/public-api';
+import { Devvit, useState } from "@devvit/public-api";
 
 Devvit.configure({
   redditAPI: true,
 });
 
-// Add a menu item to the subreddit menu for instantiating the new experience post
 Devvit.addMenuItem({
-  label: 'Add my post',
-  location: 'subreddit',
-  forUserType: 'moderator',
+  label: "Add my post",
+  location: "subreddit",
+  forUserType: "moderator",
   onPress: async (_event, context) => {
     const { reddit, ui } = context;
-    ui.showToast("Submitting your post - upon completion you'll navigate there.");
+    ui.showToast("Creating your awesome post...");
 
     const subreddit = await reddit.getCurrentSubreddit();
     const post = await reddit.submitPost({
-      title: 'My devvit post',
+      title: "✨ Welcome to Our Community! ✨",
       subredditName: subreddit.name,
-      // The preview appears while the post loads
       preview: (
-        <vstack height="100%" width="100%" alignment="middle center">
-          <text size="large">Loading ...</text>
+        <vstack
+          height="100%"
+          width="100%"
+          alignment="middle center"
+          gap="large"
+        >
+          <hstack gap="medium" alignment="middle center">
+            <image
+              url="https://i.imgur.com/6xYGNzk.gif"
+              description="Loading animation"
+              height="32px"
+              width="32px"
+            />
+            <text size="xlarge" weight="bold">
+              Preparing Something Special...
+            </text>
+          </hstack>
+          <text color="secondary">Your awesome content is on its way!</text>
         </vstack>
       ),
     });
@@ -31,25 +45,54 @@ Devvit.addMenuItem({
 
 // Add a post type definition
 Devvit.addCustomPostType({
-  name: 'Experience Post',
-  height: 'regular',
+  name: "Experience Post",
+  height: "tall",
   render: (_context) => {
     const [counter, setCounter] = useState(0);
 
     return (
-      <vstack height="100%" width="100%" gap="medium" alignment="center middle">
-        <image
-          url="logo.png"
-          description="logo"
-          imageHeight={256}
-          imageWidth={256}
-          height="48px"
-          width="48px"
-        />
-        <text size="large">{`Click counter: ${counter}`}</text>
-        <button appearance="primary" onPress={() => setCounter((counter) => counter + 1)}>
-          Click me!
-        </button>
+      <vstack
+        height="100%"
+        width="100%"
+        gap="large"
+        padding="medium"
+        alignment="center middle"
+      >
+        <hstack gap="medium" alignment="middle center">
+          <image
+            url="https://i.imgur.com/RxMJH3G.png"
+            description="Community icon"
+            height="64px"
+            width="64px"
+          />
+          <text size="xxlarge" weight="bold">
+            Community Hub
+          </text>
+        </hstack>
+
+        <vstack
+          backgroundColor="#1A1A1B" // Changed from "neutral"
+          padding="medium"
+          borderRadius="medium"
+          width="80%"
+        >
+          <text size="large" weight="bold" color="#0079D3">
+            {" "}
+            // Changed from "accent" Interactive Counter
+          </text>
+          <text size="medium" color="#787C7E">
+            {" "}
+            // Changed from "secondary" You've clicked {counter} times!
+          </text>
+          <spacer size="medium" />
+          <button
+            appearance="primary"
+            onPress={() => setCounter((prev) => prev + 1)}
+            width="100%"
+          >
+            Click to Interact!
+          </button>
+        </vstack>
       </vstack>
     );
   },
